@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Terminal Simulator</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- PAINEL LATERAL -->
+      <div class="sidebar">
+        <h2>Estrutura</h2>
+        <pre id="sidebarTree" class="tree-view"></pre>
+      </div>
+
+      <!-- TERMINAL -->
+      <div class="terminal-wrapper">
+        <div class="terminal-window">
+          <div class="terminal-topbar">
+            <div class="circles">
+              <span class="circle c-red"></span>
+              <span class="circle c-yellow"></span>
+              <span class="circle c-green"></span>
+            </div>
+            <div class="terminal-title tooltip">
+              Terminal Simulator
+              <!-- ÍCONE + TOOLTIP -->
+              <div class="info-wrapper">
+                <img
+                  class="info-icon"
+                  src="https://img.icons8.com/ios-glyphs/30/ffffff/info.png"
+                />
+                <div class="info-tooltip">
+                  <strong>Comandos disponíveis:</strong><br />
+                  - mkdir &lt;nome&gt;<br />
+                  - touch &lt;nome&gt;<br />
+                  - cd &lt;dir&gt;<br />
+                  - cd ..<br />
+                  - cd /<br />
+                  - pwd<br />
+                  - ls<br />
+                  - ls -l<br />
+                  - cat &lt;arquivo&gt;<br />
+                  - echo &lt;text&gt; &gt; &lt;arquivo&gt;<br />
+                  - echo &lt;text&gt; &gt;&gt; &lt;arquivo&gt;<br />
+                  - rm &lt;nome&gt;<br />
+                  - rename &lt;antigo&gt; &lt;novo&gt;<br />
+                  - tree<br />
+                  - history<br />
+                  - clear<br />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="output" class="terminal-screen"></div>
+
+          <div class="input-area">
+            <span class="prompt">~</span>
+            <input type="text" id="commandInput" autocomplete="off" autofocus />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/commandInterpreter.js"></script>
+    <script src="js/directory.js"></script>
+    <script src="js/file.js"></script>
+    <script src="js/fileSystem.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
