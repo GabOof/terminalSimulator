@@ -1,67 +1,76 @@
 // Instâncias
-const fs = new FileSystem();
-const interpreter = new CommandInterpreter(fs);
-const prompt = document.querySelector(".prompt");
+const sistemaArquivos = new SistemaArquivos();
+const interpretador = new InterpretadorComandos(sistemaArquivos);
+const elementoPrompt = document.querySelector(".prompt");
 
-// DOM
-const input = document.getElementById("commandInput");
-const output = document.getElementById("output");
-const sidebarTree = document.getElementById("sidebarTree");
+// Elementos DOM
+const campoEntrada = document.getElementById("inputComando");
+const areaSaida = document.getElementById("output");
+const arvoreSidebar = document.getElementById("arvoreArquivos");
 
-// Printar no terminal
-function print(msg) {
-  output.innerText += msg + "\n";
-  output.scrollTop = output.scrollHeight;
+// Função para imprimir no terminal
+function imprimirNoTerminal(mensagem) {
+  areaSaida.innerText += mensagem + "\n";
+  areaSaida.scrollTop = areaSaida.scrollHeight; // Rola para o final
 }
 
-// Gerar representação da árvore para a sidebar
-function generateTree(dir, level = 0) {
-  let result = `${" ".repeat(level * 2)}- ${dir.name}\n`;
+// Gera representação da árvore para a barra lateral
+function gerarRepresentacaoArvore(diretorio, nivel = 0) {
+  let resultado = `${" ".repeat(nivel * 2)}- ${diretorio.name}\n`;
 
-  for (let d in dir.children)
-    result += generateTree(dir.children[d], level + 1);
+  // Adiciona subdiretórios (filhos) e arquivos recursivamente
+  for (let subdiretorio in diretorio.children)
+    resultado += gerarRepresentacaoArvore(
+      diretorio.children[subdiretorio],
+      nivel + 1
+    );
 
-  for (let f in dir.files) result += `${" ".repeat((level + 1) * 2)}* ${f}\n`;
+  // Adiciona arquivos no diretório atual
+  for (let arquivo in diretorio.files)
+    resultado += `${" ".repeat((nivel + 1) * 2)}* ${arquivo}\n`;
 
-  return result;
+  return resultado;
 }
 
-// Atualizar painel lateral
-function updateSidebar() {
-  sidebarTree.innerText = generateTree(fs.root, 0);
+// Atualiza painel lateral
+function atualizarPainelLateral() {
+  arvoreSidebar.innerText = gerarRepresentacaoArvore(sistemaArquivos.root, 0);
 }
 
-function updatePrompt() {
-  prompt.innerText = interpreter.pwd() + " $";
+// Atualiza o prompt com o diretório atual
+function atualizarPrompt() {
+  elementoPrompt.innerText = interpretador.pwd() + " $";
 }
 
-// Input listener
-input.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    const cmd = input.value;
+// Ouvinte de eventos para entrada de comandos
+campoEntrada.addEventListener("keydown", (evento) => {
+  if (evento.key === "Enter") {
+    const comando = campoEntrada.value;
 
-    print(`${interpreter.pwd()} $ ${cmd}`);
+    imprimirNoTerminal(`${interpretador.pwd()} $ ${comando}`); // Imprime o comando digitado com nome do diretório
 
-    const result = interpreter.execute(cmd);
+    const resultado = interpretador.execute(comando);
 
-    if (result === "__clear__") {
-      output.innerText = "";
-      print(interpreter.pwd() + " $");
-      input.value = "";
+    // Limpa a tela se o comando for 'clear'
+    if (resultado === "__clear__") {
+      areaSaida.innerText = "";
+      imprimirNoTerminal(interpretador.pwd() + " $");
+      campoEntrada.value = "";
       return;
     }
 
-    if (result !== undefined && result !== null) {
-      print(result);
+    // Imprime o resultado do comando, somente se houver
+    if (resultado !== undefined && resultado !== null) {
+      imprimirNoTerminal(resultado);
     }
 
-    input.value = "";
+    campoEntrada.value = "";
 
-    updateSidebar(); // sempre atualizar após qualquer comando
-    updatePrompt(); // atualizar prompt
+    atualizarPainelLateral(); // sempre atualiza o painel lateral após qualquer comando
+    atualizarPrompt(); // atualiza o prompt
   }
 });
 
-// Atualiza ao carregar
-updateSidebar();
-updatePrompt();
+// Atualiza tudo ao carregar a página
+atualizarPainelLateral();
+atualizarPrompt();
