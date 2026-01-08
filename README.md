@@ -28,7 +28,7 @@ Suporte (inspirado no ambiente LINUX) para:
 
   - ✅ `mkdir <nome>` — criação de diretório
   - ✅ `rmdir <nome>` — remoção de diretório vazio
-  - ❌ `tree` — visualização hierárquica do sistema de arquivos
+  - ✅ `tree` — visualização hierárquica do sistema de arquivos
   - ✅ `rename <nome_antigo> <novo_nome>` — renomeação de arquivo/diretório
 
 - Criação e Manipulação de Arquivos
