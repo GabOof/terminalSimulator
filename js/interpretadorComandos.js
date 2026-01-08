@@ -194,14 +194,14 @@ class InterpretadorComandos {
 
   // Mostra a estrutura em árvore do diretório atual
   tree(diretorio, level) {
-    let saida = `${" ".repeat(level * 2)}- ${diretorio.nome}\n`;
+    let saida = `${" ".repeat(level * 2)}- ${diretorio.nome}\n`; // Diretório
 
     for (let diretorio in diretorio.filho) {
       saida += this.tree(diretorio.filho[diretorio], level + 1);
     }
 
     for (let arquivo in diretorio.arquivos) {
-      saida += `${" ".repeat((level + 1) * 2)}* ${arquivo}\n`;
+      saida += `${" ".repeat((level + 1) * 2)}* ${arquivo}\n`; // Arquivo
     }
 
     return saida;
