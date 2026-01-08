@@ -1,4 +1,4 @@
-class interpretadorComandos {
+class InterpretadorComandos {
   constructor(sistemaArquivos) {
     this.sistemaArquivos = sistemaArquivos; // Referência ao sistema de arquivos
   }
@@ -53,6 +53,7 @@ class interpretadorComandos {
   // Cria um novo arquivo
   touch(nome) {
     if (!nome) return "Uso: touch <nome>";
+    if (this.sistemaArquivos.atual.arquivos[nome]) return "Arquivo já existe.";
     this.sistemaArquivos.atual.arquivos[nome] = new Arquivo(nome);
     return "Arquivo criado.";
   }
@@ -66,13 +67,15 @@ class interpretadorComandos {
 
     // Navega para o diretório pai
     if (nome === "..") {
-      if (this.sistemaArquivos.atual.pai)
+      if (this.sistemaArquivos.atual.pai) {
         this.sistemaArquivos.atual = this.sistemaArquivos.atual.pai;
+      }
       return this.pwd();
     }
 
-    if (!this.sistemaArquivos.atual.filho[nome])
+    if (!this.sistemaArquivos.atual.filho[nome]) {
       return "Diretório inexistente.";
+    }
 
     // Navega para um subdiretório
     this.sistemaArquivos.atual = this.sistemaArquivos.atual.filho[nome];
@@ -84,7 +87,7 @@ class interpretadorComandos {
     let diretorio = this.sistemaArquivos.atual;
     if (diretorio === this.sistemaArquivos.raiz) return "~";
 
-    let caminho = diretorio.nome;
+    let caminho = [diretorio.nome];
 
     // Constrói o caminho completo
     while (diretorio.pai && diretorio.pai !== this.sistemaArquivos.raiz) {
@@ -100,11 +103,13 @@ class interpretadorComandos {
     let saida = "";
 
     if (flag === "-l") {
-      for (let diretorio in this.sistemaArquivos.atual.filho)
-        saida += `d rwx ${diretorio}\n`;
+      for (let diretorio in this.sistemaArquivos.atual.filho) {
+        saida += `diretório rwx ${diretorio}\n`;
+      }
 
-      for (let arquivo in this.sistemaArquivos.atual.arquivos)
-        saida += `f rw- ${arquivo}\n`;
+      for (let arquivo in this.sistemaArquivos.atual.arquivos) {
+        saida += `arquivo rw- ${arquivo}\n`;
+      }
 
       return saida;
     }
@@ -118,8 +123,9 @@ class interpretadorComandos {
   // Exibe o conteúdo de um arquivo
   cat(nome) {
     if (!nome) return "Uso: cat <arquivo>";
-    if (!this.sistemaArquivos.atual.arquivos[nome])
+    if (!this.sistemaArquivos.atual.arquivos[nome]) {
       return "Arquivo não encontrado.";
+    }
     return this.sistemaArquivos.atual.arquivos[nome].conteudo;
   }
 
@@ -132,11 +138,15 @@ class interpretadorComandos {
     let texto = correspondencia[1];
     let arquivo = correspondencia[2];
 
-    if (!this.sistemaArquivos.atual.arquivos[arquivo])
+    if (!this.sistemaArquivos.atual.arquivos[arquivo]) {
       this.sistemaArquivos.atual.arquivos[arquivo] = new Arquivo(arquivo);
-    if (input.includes(">>"))
+    }
+
+    if (input.includes(">>")) {
       this.sistemaArquivos.atual.arquivos[arquivo].conteudo += texto;
-    else this.sistemaArquivos.atual.arquivos[arquivo].conteudo = texto;
+    } else {
+      this.sistemaArquivos.atual.arquivos[arquivo].conteudo = texto;
+    }
 
     return "Conteúdo escrito.";
   }
@@ -161,7 +171,7 @@ class interpretadorComandos {
   rename(nomeAntigo, nomeNovo) {
     if (!nomeAntigo || !nomeNovo) return "Uso: rename <antigo> <novo>";
 
-    // Verifica se o arquivo ou diretório existe
+    // Verifica se o arquivo existe
     if (this.sistemaArquivos.atual.arquivos[nomeAntigo]) {
       this.sistemaArquivos.atual.arquivos[nomeNovo] =
         this.sistemaArquivos.atual.arquivos[nomeAntigo];
@@ -186,11 +196,13 @@ class interpretadorComandos {
   tree(diretorio, level) {
     let saida = `${" ".repeat(level * 2)}- ${diretorio.nome}\n`;
 
-    for (let diretorio in diretorio.filho)
+    for (let diretorio in diretorio.filho) {
       saida += this.tree(diretorio.filho[diretorio], level + 1);
+    }
 
-    for (let arquivo in diretorio.arquivos)
+    for (let arquivo in diretorio.arquivos) {
       saida += `${" ".repeat((level + 1) * 2)}* ${arquivo}\n`;
+    }
 
     return saida;
   }
