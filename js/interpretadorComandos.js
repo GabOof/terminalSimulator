@@ -127,6 +127,7 @@ class InterpretadorComandos {
         const arquivo = this.sistemaArquivos.atual.arquivos[nomeArquivo];
         saida += `-> Arquivo\n`;
         saida += `  Nome: ${nomeArquivo}\n`;
+        saida += `  Tamanho: ${arquivo.tamanho} bytes\n`;
         saida += `  Permissões: ${arquivo.permissoes}\n`;
         saida += `  Dono: ${arquivo.dono}\n`;
         saida += `  Criado: ${arquivo.criadoEm}\n`;
@@ -157,15 +158,19 @@ class InterpretadorComandos {
     let texto = correspondencia[1];
     let arquivo = correspondencia[2];
 
+    // Cria o arquivo se não existir
     if (!this.sistemaArquivos.atual.arquivos[arquivo]) {
       this.sistemaArquivos.atual.arquivos[arquivo] = new Arquivo(arquivo);
     }
 
+    // Escreve ou inclui o texto no arquivo
     if (input.includes(">>")) {
       this.sistemaArquivos.atual.arquivos[arquivo].conteudo += texto;
     } else {
       this.sistemaArquivos.atual.arquivos[arquivo].conteudo = texto;
     }
+
+    arquivoTexto.tamanho = arquivoTexto.conteudo.length + 4 * 1024;
 
     return "Conteúdo escrito.";
   }

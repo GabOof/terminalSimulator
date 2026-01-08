@@ -7,5 +7,6 @@ class Arquivo {
     this.dono = "user"; // Dono padrão
     this.criadoEm = new Date(); // Data de criação
     this.atualizadoEm = new Date(); // Última modificação
+    this.tamanho = tamanho; // Tamanho do arquivo em bytes
   }
 }
