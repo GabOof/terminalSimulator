@@ -19,15 +19,17 @@ function gerarRepresentacaoArvore(diretorio, nivel = 0) {
   let resultado = `${" ".repeat(nivel * 2)}- ${diretorio.nome}\n`;
 
   // Adiciona subdiretórios (filhos) e arquivos recursivamente
-  for (let subdiretorio in diretorio.filhos)
+  for (let subdiretorio in diretorio.filho) {
     resultado += gerarRepresentacaoArvore(
-      diretorio.filhos[subdiretorio],
+      diretorio.filho[subdiretorio],
       nivel + 1
     );
+  }
 
   // Adiciona arquivos no diretório atual
-  for (let arquivo in diretorio.arquivos)
+  for (let arquivo in diretorio.arquivos) {
     resultado += `${" ".repeat((nivel + 1) * 2)}* ${arquivo}\n`;
+  }
 
   return resultado;
 }
@@ -45,7 +47,7 @@ function atualizarPrompt() {
 // Ouvinte de eventos para entrada de comandos
 campoEntrada.addEventListener("keydown", (evento) => {
   if (evento.key === "Enter") {
-    const comando = campoEntrada.value;
+    const comando = campoEntrada.value.trim();
 
     imprimirNoTerminal(`${interpretador.pwd()} $ ${comando}`); // Imprime o comando digitado com nome do diretório
 
@@ -65,12 +67,22 @@ campoEntrada.addEventListener("keydown", (evento) => {
     }
 
     campoEntrada.value = "";
-
     atualizarPainelLateral(); // sempre atualiza o painel lateral após qualquer comando
     atualizarPrompt(); // atualiza o prompt
   }
 });
 
+// Foca no input quando clicar em qualquer lugar
+document.addEventListener("click", () => {
+  campoEntrada.focus();
+});
+
 // Atualiza tudo ao carregar a página
 atualizarPainelLateral();
 atualizarPrompt();
+// Imprimir mensagem inicial
+imprimirNoTerminal("Bem-vindo ao simulador de terminal!");
+imprimirNoTerminal("Veja os comandos disponíveis no ícone de informação.");
+imprimirNoTerminal("");
+imprimirNoTerminal(interpretador.pwd() + " $");
+campoEntrada.focus();
