@@ -1,4 +1,4 @@
-/* === Reset básico === */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -6,83 +6,78 @@
   font-family: Consolas, monaco, monospace;
 }
 
-/* === Fundo futurista === */
+/* Fundo */
 body {
   height: 100vh;
-  background: radial-gradient(circle at top, #1a1a1a, #0d0d0d 70%);
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* === Container do terminal === */
-.terminal-wrapper {
+/* Container do terminal */
+.container-terminal {
   display: flex;
   justify-content: center;
   width: 100%;
   padding: 40px;
 }
 
-/* === Janela do terminal com Glassmorphism === */
-.terminal-window {
+/* Janela do terminal */
+.janela-terminal {
   width: 75%;
   max-width: 950px;
   height: 550px;
-  background: rgba(15, 15, 20, 0.55);
-  backdrop-filter: blur(12px);
+  background: #000000;
   border-radius: 14px;
-  border: 1px solid rgba(180, 180, 255, 0.15);
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), 0 0 60px rgba(0, 0, 0, 0.8);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   animation: fadeIn 0.5s ease-in-out;
 }
 
-/* === Topbar estilo Mac + neon === */
-.terminal-topbar {
+/* Barra superior janela Macbook */
+.barra-superior-terminal {
   padding: 12px 18px;
   display: flex;
   align-items: center;
   background: rgba(50, 50, 50, 0.45);
-  border-bottom: 1px solid rgba(200, 200, 255, 0.1);
 }
 
-.circles {
+.circulos-barra {
   display: flex;
   gap: 8px;
 }
 
-.circle {
+.circulo-barra {
   width: 13px;
   height: 13px;
   border-radius: 50%;
 }
 
-.c-red {
+.circulo-fechar {
   background: #ff5959;
 }
-.c-yellow {
+.circulo-minimizar {
   background: #ffc147;
 }
-.c-green {
+.circulo-expandir {
   background: #3fd46b;
 }
 
-.terminal-title {
+.titulo-terminal {
   margin-left: auto;
   margin-right: auto;
   text-transform: uppercase;
   color: #ffffff;
   letter-spacing: 2px;
-
-  display: flex; /* ativa alinhamento */
-  align-items: center; /* alinha verticalmente */
-  gap: 8px; /* espaço entre texto e ícone */
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* === Tela de saída do terminal === */
-.terminal-screen {
+/* Tela de saída do terminal */
+.tela-terminal {
   flex: 1;
   padding: 20px;
   color: #bce8ff;
@@ -91,24 +86,23 @@ body {
   white-space: pre-wrap;
 }
 
-/* Scrollbar elegante */
-.terminal-screen::-webkit-scrollbar {
+/* Scrollbar do terminal */
+.tela-terminal::-webkit-scrollbar {
   width: 8px;
 }
-.terminal-screen::-webkit-scrollbar-thumb {
+.tela-terminal::-webkit-scrollbar-thumb {
   background: #2c2c3a;
   border-radius: 10px;
 }
 
-/* === Área de input === */
-.input-area {
+/* Área de input */
+.area-input {
   width: 100%;
   display: inline-block;
   align-items: center;
   padding: 18px;
   gap: 12px;
   background: rgba(20, 20, 30, 0.55);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .prompt {
@@ -117,7 +111,7 @@ body {
 }
 
 /* Campo de entrada */
-#commandInput {
+#inputComando {
   width: auto;
   background: none;
   border: none;
@@ -126,20 +120,8 @@ body {
   font-size: 1rem;
 }
 
-/* === Suave animação de entrada === */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* LAYOUT COM PAINEL LATERAL */
-.layout {
+/* Layout completo da página */
+.layout-pagina {
   width: 100%;
   height: 100vh;
   display: flex;
@@ -147,30 +129,27 @@ body {
   padding: 30px;
 }
 
-/* PAINEL LATERAL */
-.sidebar {
+/* Painel lateral */
+.painel-lateral {
   width: 250px;
-  background: rgba(25, 25, 35, 0.4);
-  border: 1px solid rgba(120, 120, 255, 0.15);
-  backdrop-filter: blur(10px);
+  background: #000000;
   padding: 20px;
   border-radius: 12px;
   color: #bce8ff;
   overflow-y: auto;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
 }
 
-.sidebar h2 {
+.painel-lateral h2 {
   text-align: center;
   margin-bottom: 10px;
 }
 
-.tree-view {
+.arvore-arquivos {
   white-space: pre-wrap;
   font-size: 0.85rem;
 }
 
-.info-wrapper {
+.container-info {
   position: relative;
   display: inline-block;
   margin-left: 8px;
@@ -178,18 +157,18 @@ body {
   height: 20px;
 }
 
-.info-icon {
+.icone-info {
   width: 20px;
   height: 20px;
   cursor: pointer;
   opacity: 0.8;
 }
 
-.info-icon:hover {
+.icone-info:hover {
   opacity: 1;
 }
 
-.info-tooltip {
+.tooltip-info {
   display: none;
   position: absolute;
   top: 25px;
@@ -200,11 +179,10 @@ body {
   padding: 10px;
   font-size: 12px;
   border-radius: 6px;
-  border: 1px solid #444;
   line-height: 1.4;
   z-index: 999;
 }
 
-.info-wrapper:hover .info-tooltip {
+.container-info:hover .tooltip-info {
   display: block;
 }

@@ -7,31 +7,31 @@
   </head>
 
   <body>
-    <div class="layout">
+    <div class="layout-pagina">
       <!-- PAINEL LATERAL -->
-      <div class="sidebar">
+      <div class="painel-lateral">
         <h2>Estrutura</h2>
-        <pre id="sidebarTree" class="tree-view"></pre>
+        <pre id="painel-lateralTree" class="arvore-arquivos"></pre>
       </div>
 
       <!-- TERMINAL -->
-      <div class="terminal-wrapper">
-        <div class="terminal-window">
-          <div class="terminal-topbar">
-            <div class="circles">
-              <span class="circle c-red"></span>
-              <span class="circle c-yellow"></span>
-              <span class="circle c-green"></span>
+      <div class="container-terminal">
+        <div class="janela-terminal">
+          <div class="barra-superior-terminal">
+            <div class="circulos-barra">
+              <span class="circulo-barra circulo-fechar"></span>
+              <span class="circulo-barra circulo-minimizar"></span>
+              <span class="circulo-barra circulo-expandir"></span>
             </div>
-            <div class="terminal-title tooltip">
+            <div class="titulo-terminal tooltip">
               Terminal Simulator
               <!-- ÍCONE + TOOLTIP -->
-              <div class="info-wrapper">
+              <div class="container-info">
                 <img
-                  class="info-icon"
+                  class="icone-info"
                   src="https://img.icons8.com/ios-glyphs/30/ffffff/info.png"
                 />
-                <div class="info-tooltip">
+                <div class="tooltip-info">
                   <strong>Comandos disponíveis:</strong><br />
                   - mkdir &lt;nome&gt;<br />
                   - touch &lt;nome&gt;<br />
@@ -54,11 +54,11 @@
             </div>
           </div>
 
-          <div id="output" class="terminal-screen"></div>
+          <div id="output" class="tela-terminal"></div>
 
-          <div class="input-area">
+          <div class="area-input">
             <span class="prompt">~</span>
-            <input type="text" id="commandInput" autocomplete="off" autofocus />
+            <input type="text" id="inputComando" autocomplete="off" autofocus />
           </div>
         </div>
       </div>
