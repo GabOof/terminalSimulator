@@ -1,11 +1,11 @@
 // Representação de um arquivo simples
-class File {
-  constructor(name, content = "") {
-    this.name = name; // Nome do arquivo
-    this.content = content; // Conteúdo textual
-    this.permissions = "rw-"; // Permissões padrão
-    this.owner = "user"; // Dono padrão
-    this.createdAt = new Date(); // Data de criação
-    this.updatedAt = new Date(); // Última modificação
+class Arquivo {
+  constructor(nome, conteudo = "") {
+    this.nome = nome; // Nome do arquivo
+    this.conteudo = conteudo; // Conteúdo textual
+    this.permissoes = "rw-"; // Permissões padrão
+    this.dono = "user"; // Dono padrão
+    this.criadoEm = new Date(); // Data de criação
+    this.atualizadoEm = new Date(); // Última modificação
   }
 }
