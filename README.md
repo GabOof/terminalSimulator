@@ -18,25 +18,64 @@ Simulador de sistema de arquivos inspirado em terminais LINUX, desenvolvido com 
 - Diretórios representados por instâncias da classe `Directory`.
 - Arquivos representados por instâncias da classe `File`.
 - Metadados simulados: permissões, usuário proprietário, timestamps etc.
-- Navegação via comandos `cd`, `pwd`, `ls`, `tree`.
+- Navegação via comandos.
 
 ### 2. Interpretador Interativo de Comandos
 
 Suporte (inspirado no ambiente LINUX) para:
 
-- `mkdir <nome>`
-- `touch <nome>`
-- `cd <dir>`, `cd ..`, `cd /`
-- `pwd`
-- `ls` e `ls -l`
-- `cat <arquivo>`
-- `echo <texto> > <arquivo>`
-- `echo <texto> >> <arquivo>`
-- `rm <nome>`
-- `rename <antigo> <novo>`
-- `tree`
-- `history`
-- `clear`
+- Criação e Manipulação de Diretórios
+
+  - ✅ `mkdir <nome>` — criação de diretório
+  - ✅ `rmdir <nome>` — remoção de diretório vazio
+  - ❌ `tree` — visualização hierárquica do sistema de arquivos
+  - ✅ `rename <nome_antigo> <novo_nome>` — renomeação de arquivo/diretório
+
+- Criação e Manipulação de Arquivos
+
+  - ✅ `touch <nome>` — criação de arquivo vazio
+  - ✅ `echo <texto> > <arquivo>` — sobrescrita de conteúdo
+  - ✅ `echo <texto> >> <arquivo>` — concatenação de conteúdo
+  - ✅ `cat <arquivo>` — exibição do conteúdo
+  - ✅ `rm <nome>` — remoção forçada (arquivo ou diretório não vazio)
+  - ❌ `head <arquivo> <n>` — primeiras n linhas
+  - ❌ `tail <arquivo> <n>` — últimas n linhas
+  - ❌ `wc <arquivo>` — contagem de linhas, palavras e caracteres
+
+- Navegação entre Diretórios
+
+  - ✅ `cd <nome>` — navegação relativa
+  - ✅ `cd ..` — diretório pai
+  - ✅ `cd /` — diretório raiz
+  - ✅ `pwd` — caminho absoluto atual
+
+- Busca e Filtragem
+
+  - ❌ `find <diretorio> -name <nome>` — busca recursiva por nome
+  - ❌ `grep <termo> <arquivo>` — busca textual em arquivo
+
+- Permissões e Propriedades (Simulação)
+
+  - ❌ `chmod <permissao> <nome>` — permissões (r, w, x)
+  - ❌ `chown <proprietario> <nome>` — alteração de proprietário
+  - ✅ `ls -l` — listagem detalhada (tipo, tamanho, permissões, dono)
+
+- Informações sobre Arquivos e Diretórios
+
+  - ❌ `stat <nome>` — metadados completos
+  - ❌ `du <diretorio>` — tamanho total do diretório (bytes)
+
+- Operações Avançadas
+
+  - ❌ `cp <origem> <destino>` — cópia de arquivos/diretórios
+  - ❌ `mv <origem> <destino>` — movimentação
+  - ❌ `diff <arquivo1> <arquivo2>` — comparação linha a linha
+  - ❌ `zip <arquivo.zip> <itens>` — compactação simulada
+  - ❌ `unzip <arquivo.zip>` — descompactação simulada
+
+- Extras
+  - ✅ `history` — histórico de comandos executados
+  - ✅ `clear` — limpa a tela do terminal
 
 ### 3. Interface Gráfica Estética e Funcional
 
@@ -64,8 +103,8 @@ Responsável pelo gerenciamento global do sistema de arquivos:
 
 Modela uma pasta contendo:
 
-- subdiretórios (`children`)
-- arquivos (`files`)
+- subdiretórios (`filho`)
+- arquivos (`arquivos`)
 - metadados (owner, permissions, timestamps)
 
 ### 3. `File`
