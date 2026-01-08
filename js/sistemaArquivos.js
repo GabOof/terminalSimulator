@@ -1,4 +1,4 @@
-// Classe principal que simula o sistema de arquivos em árvore
+// Simula o sistema de arquivos em árvore
 class SistemaArquivos {
   constructor() {
     this.raiz = new Diretorio("/"); // Diretório raiz
