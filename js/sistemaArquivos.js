@@ -1,13 +1,13 @@
 // Classe principal que simula o sistema de arquivos em árvore
-class FileSystem {
+class SistemaArquivos {
   constructor() {
-    this.root = new Directory("/"); // Diretório raiz
-    this.current = this.root; // Diretório atual
-    this.history = []; // Histórico de comandos
+    this.raiz = new Diretorio("/"); // Diretório raiz
+    this.atual = this.raiz; // Diretório atual
+    this.historico = []; // Histórico de comandos
   }
 
   // Salvar comando no histórico
-  addHistory(cmd) {
-    this.history.push(cmd);
+  adicionaHistorico(cmd) {
+    this.historico.push(cmd);
   }
 }
