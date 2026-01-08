@@ -1,170 +1,197 @@
-class CommandInterpreter {
-  constructor(fs) {
-    this.fs = fs; // Referência ao sistema de arquivos
+class interpretadorComandos {
+  constructor(sistemaArquivos) {
+    this.sistemaArquivos = sistemaArquivos; // Referência ao sistema de arquivos
   }
 
-  execute(input) {
-    this.fs.addHistory(input); // Salvar histórico
-
-    const args = input.trim().split(" ");
-    const cmd = args[0];
+  executa(input) {
+    this.sistemaArquivos.adicionaHistorico(input); // Salvar histórico
+    const argumentos = input.trim().split(" ");
+    const cmd = argumentos[0];
 
     switch (cmd) {
       case "mkdir":
-        return this.mkdir(args[1]);
+        return this.mkdir(argumentos[1]);
       case "touch":
-        return this.touch(args[1]);
+        return this.touch(argumentos[1]);
       case "cd":
-        return this.cd(args[1]);
+        return this.cd(argumentos[1]);
       case "pwd":
         return this.pwd();
       case "ls":
-        return this.ls(args[1]);
+        return this.ls(argumentos[1]);
       case "cat":
-        return this.cat(args[1]);
+        return this.cat(argumentos[1]);
       case "echo":
         return this.echo(input);
       case "rm":
-        return this.rm(args[1]);
+        return this.rm(argumentos[1]);
       case "tree":
-        return this.tree(this.fs.current, 0);
+        return this.tree(this.sistemaArquivos.atual, 0);
       case "rename":
-        return this.rename(args[1], args[2]);
+        return this.rename(argumentos[1], argumentos[2]);
       case "history":
-        return this.fs.history.join("\n");
+        return this.sistemaArquivos.historico.join("\n");
       case "clear":
         return "__clear__";
-
       default:
         return "Comando inválido.";
     }
   }
 
-  mkdir(name) {
-    if (!name) return "Uso: mkdir <nome>";
-    if (this.fs.current.children[name]) return "Diretório já existe.";
+  // Cria um novo diretório
+  mkdir(nome) {
+    if (!nome) return "Uso: mkdir <nome>";
+    if (this.sistemaArquivos.atual.filho[nome]) return "Diretório já existe.";
 
-    this.fs.current.children[name] = new Directory(name, this.fs.current);
+    this.sistemaArquivos.atual.filho[nome] = new Diretorio(
+      nome,
+      this.sistemaArquivos.atual
+    );
     return "Diretório criado.";
   }
 
-  touch(name) {
-    if (!name) return "Uso: touch <nome>";
-    this.fs.current.files[name] = new File(name);
+  // Cria um novo arquivo
+  touch(nome) {
+    if (!nome) return "Uso: touch <nome>";
+    this.sistemaArquivos.atual.arquivos[nome] = new Arquivo(nome);
     return "Arquivo criado.";
   }
 
-  cd(name) {
-    if (!name || name === "/") {
-      this.fs.current = this.fs.root;
+  // Navega para outro diretório
+  cd(nome) {
+    if (!nome || nome === "/") {
+      this.sistemaArquivos.atual = this.sistemaArquivos.raiz;
       return this.pwd();
     }
 
-    if (name === "..") {
-      if (this.fs.current.parent) this.fs.current = this.fs.current.parent;
+    // Navega para o diretório pai
+    if (nome === "..") {
+      if (this.sistemaArquivos.atual.pai)
+        this.sistemaArquivos.atual = this.sistemaArquivos.atual.pai;
       return this.pwd();
     }
 
-    if (!this.fs.current.children[name]) return "Diretório inexistente.";
+    if (!this.sistemaArquivos.atual.filho[nome])
+      return "Diretório inexistente.";
 
-    this.fs.current = this.fs.current.children[name];
+    // Navega para um subdiretório
+    this.sistemaArquivos.atual = this.sistemaArquivos.atual.filho[nome];
     return this.pwd();
   }
 
+  // Retorna o caminho do diretório atual
   pwd() {
-    let dir = this.fs.current;
-    if (dir === this.fs.root) return "~";
+    let diretorio = this.sistemaArquivos.atual;
+    if (diretorio === this.sistemaArquivos.raiz) return "~";
 
-    let path = dir.name;
-    while (dir.parent && dir.parent !== this.fs.root) {
-      dir = dir.parent;
-      path = dir.name + "/" + path;
+    let caminho = diretorio.nome;
+
+    // Constrói o caminho completo
+    while (diretorio.pai && diretorio.pai !== this.sistemaArquivos.raiz) {
+      diretorio = diretorio.pai;
+      caminho = diretorio.nome + "/" + caminho;
     }
 
-    return "~/" + path;
+    return "~/" + caminho;
   }
 
+  // Lista o conteúdo do diretório atual
   ls(flag) {
-    let out = "";
+    let saida = "";
 
     if (flag === "-l") {
-      for (let d in this.fs.current.children) out += `d rwx ${d}\n`;
+      for (let diretorio in this.sistemaArquivos.atual.filho)
+        saida += `d rwx ${diretorio}\n`;
 
-      for (let f in this.fs.current.files) out += `f rw- ${f}\n`;
+      for (let arquivo in this.sistemaArquivos.atual.arquivos)
+        saida += `f rw- ${arquivo}\n`;
 
-      return out;
+      return saida;
     }
 
-    return Object.keys(this.fs.current.children)
-      .concat(Object.keys(this.fs.current.files))
+    // Lista simples do diretório
+    return Object.keys(this.sistemaArquivos.atual.filho)
+      .concat(Object.keys(this.sistemaArquivos.atual.arquivos))
       .join("  ");
   }
 
-  cat(name) {
-    if (!name) return "Uso: cat <arquivo>";
-    if (!this.fs.current.files[name]) return "Arquivo não encontrado.";
-    return this.fs.current.files[name].content;
+  // Exibe o conteúdo de um arquivo
+  cat(nome) {
+    if (!nome) return "Uso: cat <arquivo>";
+    if (!this.sistemaArquivos.atual.arquivos[nome])
+      return "Arquivo não encontrado.";
+    return this.sistemaArquivos.atual.arquivos[nome].conteudo;
   }
 
+  // Escreve texto em um arquivo
   echo(input) {
-    const match = input.match(/echo (.*) >>? (\S+)/);
+    const correspondencia = input.match(/echo (.*) >>? (\S+)/);
 
-    if (!match) return "Uso: echo <texto> > <arquivo>";
+    if (!correspondencia) return "Uso: echo <texto> > <arquivo>";
 
-    let text = match[1];
-    let file = match[2];
+    let texto = correspondencia[1];
+    let arquivo = correspondencia[2];
 
-    if (!this.fs.current.files[file])
-      this.fs.current.files[file] = new File(file);
-
-    if (input.includes(">>")) this.fs.current.files[file].content += text;
-    else this.fs.current.files[file].content = text;
+    if (!this.sistemaArquivos.atual.arquivos[arquivo])
+      this.sistemaArquivos.atual.arquivos[arquivo] = new Arquivo(arquivo);
+    if (input.includes(">>"))
+      this.sistemaArquivos.atual.arquivos[arquivo].conteudo += texto;
+    else this.sistemaArquivos.atual.arquivos[arquivo].conteudo = texto;
 
     return "Conteúdo escrito.";
   }
 
-  rm(name) {
-    if (!name) return "Uso: rm <nome>";
+  // Remove um arquivo ou diretório
+  rm(nome) {
+    if (!nome) return "Uso: rm <nome>";
 
-    if (this.fs.current.files[name]) {
-      delete this.fs.current.files[name];
+    if (this.sistemaArquivos.atual.arquivos[nome]) {
+      delete this.sistemaArquivos.atual.arquivos[nome];
       return "Arquivo removido.";
     }
-    if (this.fs.current.children[name]) {
-      delete this.fs.current.children[name];
+    if (this.sistemaArquivos.atual.filho[nome]) {
+      delete this.sistemaArquivos.atual.filho[nome];
       return "Diretório removido.";
     }
 
     return "Nome não encontrado.";
   }
 
-  rename(oldName, newName) {
-    if (!oldName || !newName) return "Uso: rename <antigo> <novo>";
+  // Renomeia um arquivo ou diretório
+  rename(nomeAntigo, nomeNovo) {
+    if (!nomeAntigo || !nomeNovo) return "Uso: rename <antigo> <novo>";
 
-    if (this.fs.current.files[oldName]) {
-      this.fs.current.files[newName] = this.fs.current.files[oldName];
-      this.fs.current.files[newName].name = newName;
-      delete this.fs.current.files[oldName];
+    // Verifica se o arquivo ou diretório existe
+    if (this.sistemaArquivos.atual.arquivos[nomeAntigo]) {
+      this.sistemaArquivos.atual.arquivos[nomeNovo] =
+        this.sistemaArquivos.atual.arquivos[nomeAntigo];
+      this.sistemaArquivos.atual.arquivos[nomeNovo].nome = nomeNovo;
+      delete this.sistemaArquivos.atual.arquivos[nomeAntigo];
       return "Arquivo renomeado.";
     }
 
-    if (this.fs.current.children[oldName]) {
-      this.fs.current.children[newName] = this.fs.current.children[oldName];
-      this.fs.current.children[newName].name = newName;
-      delete this.fs.current.children[oldName];
+    // Verifica se é um diretório
+    if (this.sistemaArquivos.atual.filho[nomeAntigo]) {
+      this.sistemaArquivos.atual.filho[nomeNovo] =
+        this.sistemaArquivos.atual.filho[nomeAntigo];
+      this.sistemaArquivos.atual.filho[nomeNovo].nome = nomeNovo;
+      delete this.sistemaArquivos.atual.filho[nomeAntigo];
       return "Diretório renomeado.";
     }
 
     return "Nada encontrado.";
   }
 
-  tree(dir, level) {
-    let out = `${" ".repeat(level * 2)}- ${dir.name}\n`;
+  // Mostra a estrutura em árvore do diretório atual
+  tree(diretorio, level) {
+    let saida = `${" ".repeat(level * 2)}- ${diretorio.nome}\n`;
 
-    for (let d in dir.children) out += this.tree(dir.children[d], level + 1);
+    for (let diretorio in diretorio.filho)
+      saida += this.tree(diretorio.filho[diretorio], level + 1);
 
-    for (let f in dir.files) out += `${" ".repeat((level + 1) * 2)}* ${f}\n`;
+    for (let arquivo in diretorio.arquivos)
+      saida += `${" ".repeat((level + 1) * 2)}* ${arquivo}\n`;
 
-    return out;
+    return saida;
   }
 }
