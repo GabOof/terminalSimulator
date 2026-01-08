@@ -25,8 +25,6 @@ class InterpretadorComandos {
         return this.echo(input);
       case "rm":
         return this.rm(argumentos[1]);
-      case "rmdir":
-        return this.rmdir();
       case "tree":
         return this.tree(this.sistemaArquivos.atual, 0);
       case "rename":
@@ -35,6 +33,14 @@ class InterpretadorComandos {
         return this.sistemaArquivos.historico.join("\n");
       case "clear":
         return "__clear__";
+      case "rmdir":
+        return this.rmdir();
+      case "head":
+        return this.head(argumentos[1], argumentos[2]);
+      case "tail":
+        return this.tail(argumentos[1], argumentos[2]);
+      case "wc":
+        return this.wc(argumentos[1]);
       default:
         return "Comando inválido.";
     }
@@ -180,13 +186,6 @@ class InterpretadorComandos {
     return "Nome não encontrado.";
   }
 
-  // Remove um diretório vazio
-  rmdir() {
-    // TODO: Implementar funcionalidade de rmdir
-
-    return "Funcionalidade em desenvolvimento.";
-  }
-
   // Renomeia um arquivo ou diretório
   rename(nomeAntigo, nomeNovo) {
     if (!nomeAntigo || !nomeNovo) return "Uso: rename <antigo> <novo>";
@@ -216,6 +215,31 @@ class InterpretadorComandos {
   tree(diretorio, level) {
     // TODO: Implementar funcionalidade de árvore
 
+    return "Funcionalidade em desenvolvimento.";
+  }
+
+  // Remove um diretório vazio
+  rmdir() {
+    // TODO: Implementar funcionalidade de rmdir
+
+    return "Funcionalidade em desenvolvimento.";
+  }
+
+  // Exibe as primeiras N linhas de um arquivo
+  head(nome, linhas) {
+    // TODO: Implementar funcionalidade de head
+    return "Funcionalidade em desenvolvimento.";
+  }
+
+  // Exibe as últimas N linhas de um arquivo
+  tail(nome, linhas) {
+    // TODO: Implementar funcionalidade de tail
+    return "Funcionalidade em desenvolvimento.";
+  }
+
+  // Conta linhas, palavras e caracteres em um arquivo
+  wc(nome) {
+    // TODO: Implementar funcionalidade de wc
     return "Funcionalidade em desenvolvimento.";
   }
 }
