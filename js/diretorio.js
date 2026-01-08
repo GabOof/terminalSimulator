@@ -1,4 +1,4 @@
-// Classe que representa um diretório
+// Representa um diretório
 class Diretorio {
   constructor(nome, pai = null) {
     this.nome = nome; // Nome do diretório
