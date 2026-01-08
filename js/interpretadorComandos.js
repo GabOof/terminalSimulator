@@ -25,6 +25,8 @@ class InterpretadorComandos {
         return this.echo(input);
       case "rm":
         return this.rm(argumentos[1]);
+      case "rmdir":
+        return this.rmdir();
       case "tree":
         return this.tree(this.sistemaArquivos.atual, 0);
       case "rename":
@@ -100,19 +102,34 @@ class InterpretadorComandos {
 
   // Lista o conteúdo do diretório atual
   ls(flag) {
-    let saida = "";
-
     if (flag === "-l") {
-      for (let diretorio in this.sistemaArquivos.atual.filho) {
-        saida += `diretório rwx ${diretorio}\n`;
+      let saida = "";
+
+      // Diretórios
+      for (let nomeDiretorio in this.sistemaArquivos.atual.filho) {
+        const diretorio = this.sistemaArquivos.atual.filho[nomeDiretorio];
+        saida += `-> Diretório\n`;
+        saida += `  Nome: ${nomeDiretorio}/\n`;
+        saida += `  Permissões: ${diretorio.permissoes}\n`;
+        saida += `  Dono: ${diretorio.dono}\n`;
+        saida += `  Criado: ${diretorio.criadoEm}\n`;
+        saida += `----------\n`;
       }
 
-      for (let arquivo in this.sistemaArquivos.atual.arquivos) {
-        saida += `arquivo rw- ${arquivo}\n`;
+      // Arquivos
+      for (let nomeArquivo in this.sistemaArquivos.atual.arquivos) {
+        const arquivo = this.sistemaArquivos.atual.arquivos[nomeArquivo];
+        saida += `-> Arquivo\n`;
+        saida += `  Nome: ${nomeArquivo}\n`;
+        saida += `  Permissões: ${arquivo.permissoes}\n`;
+        saida += `  Dono: ${arquivo.dono}\n`;
+        saida += `  Criado: ${arquivo.criadoEm}\n`;
+        saida += `----------\n`;
       }
 
       return saida;
     }
+
     return "Uso: ls -l";
   }
 
