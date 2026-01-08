@@ -228,11 +228,26 @@ class InterpretadorComandos {
     return resultado;
   }
 
-  // Remove um diretório vazio
+  // Remove um diretório vazio no diretório atual
   rmdir() {
-    // TODO: Implementar funcionalidade de rmdir
+    // Percorre todos os subdiretórios do diretório atual
+    for (let nome in this.sistemaArquivos.atual.filho) {
+      const diretorio = this.sistemaArquivos.atual.filho[nome]; // Obtém o subdiretório
 
-    return "Funcionalidade em desenvolvimento.";
+      // Verifica se o subdiretório está vazio
+      const temFilhos = Object.keys(diretorio.filho).length > 0;
+      const temArquivos = Object.keys(diretorio.arquivos).length > 0;
+      if (!temFilhos && !temArquivos) {
+        // Remove o subdiretório vazio
+        delete this.sistemaArquivos.atual.filho[nome];
+      }
+    }
+
+    if (diretoriosRemovidos === 0) {
+      return "Não há diretórios vazios.";
+    }
+
+    return `Diretórios vazios removidos.`;
   }
 
   // Exibe as primeiras N linhas de um arquivo
