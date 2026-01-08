@@ -16,17 +16,17 @@ function imprimirNoTerminal(mensagem) {
 
 // Gera representação da árvore para a barra lateral
 function gerarRepresentacaoArvore(diretorio, nivel = 0) {
-  let resultado = `${" ".repeat(nivel * 2)}- ${diretorio.name}\n`;
+  let resultado = `${" ".repeat(nivel * 2)}- ${diretorio.nome}\n`;
 
   // Adiciona subdiretórios (filhos) e arquivos recursivamente
-  for (let subdiretorio in diretorio.children)
+  for (let subdiretorio in diretorio.filhos)
     resultado += gerarRepresentacaoArvore(
-      diretorio.children[subdiretorio],
+      diretorio.filhos[subdiretorio],
       nivel + 1
     );
 
   // Adiciona arquivos no diretório atual
-  for (let arquivo in diretorio.files)
+  for (let arquivo in diretorio.arquivos)
     resultado += `${" ".repeat((nivel + 1) * 2)}* ${arquivo}\n`;
 
   return resultado;
@@ -34,7 +34,7 @@ function gerarRepresentacaoArvore(diretorio, nivel = 0) {
 
 // Atualiza painel lateral
 function atualizarPainelLateral() {
-  arvoreSidebar.innerText = gerarRepresentacaoArvore(sistemaArquivos.root, 0);
+  arvoreSidebar.innerText = gerarRepresentacaoArvore(sistemaArquivos.raiz, 0);
 }
 
 // Atualiza o prompt com o diretório atual
@@ -49,7 +49,7 @@ campoEntrada.addEventListener("keydown", (evento) => {
 
     imprimirNoTerminal(`${interpretador.pwd()} $ ${comando}`); // Imprime o comando digitado com nome do diretório
 
-    const resultado = interpretador.execute(comando);
+    const resultado = interpretador.executa(comando);
 
     // Limpa a tela se o comando for 'clear'
     if (resultado === "__clear__") {
