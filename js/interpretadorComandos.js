@@ -113,11 +113,7 @@ class InterpretadorComandos {
 
       return saida;
     }
-
-    // Lista simples do diretório
-    return Object.keys(this.sistemaArquivos.atual.filho)
-      .concat(Object.keys(this.sistemaArquivos.atual.arquivos))
-      .join("  ");
+    return "Uso: ls -l";
   }
 
   // Exibe o conteúdo de um arquivo
@@ -167,6 +163,13 @@ class InterpretadorComandos {
     return "Nome não encontrado.";
   }
 
+  // Remove um diretório vazio
+  rmdir() {
+    // TODO: Implementar funcionalidade de rmdir
+
+    return "Funcionalidade em desenvolvimento.";
+  }
+
   // Renomeia um arquivo ou diretório
   rename(nomeAntigo, nomeNovo) {
     if (!nomeAntigo || !nomeNovo) return "Uso: rename <antigo> <novo>";
@@ -194,16 +197,8 @@ class InterpretadorComandos {
 
   // Mostra a estrutura em árvore do diretório atual
   tree(diretorio, level) {
-    let saida = `${" ".repeat(level * 2)}- ${diretorio.nome}\n`; // Diretório
+    // TODO: Implementar funcionalidade de árvore
 
-    for (let diretorio in diretorio.filho) {
-      saida += this.tree(diretorio.filho[diretorio], level + 1);
-    }
-
-    for (let arquivo in diretorio.arquivos) {
-      saida += `${" ".repeat((level + 1) * 2)}* ${arquivo}\n`; // Arquivo
-    }
-
-    return saida;
+    return "Funcionalidade em desenvolvimento.";
   }
 }
