@@ -212,10 +212,20 @@ class InterpretadorComandos {
   }
 
   // Mostra a estrutura em árvore do diretório atual
-  tree(diretorio, level) {
-    // TODO: Implementar funcionalidade de árvore
+  tree(diretorio, nivel) {
+    let resultado = `${" ".repeat(nivel * 2)}- ${diretorio.nome}\n`; // Estrutura árvore do diretório atual (-)
 
-    return "Funcionalidade em desenvolvimento.";
+    // Adiciona subdiretórios (filhos) e arquivos recursivamente
+    for (let subdiretorio in diretorio.filho) {
+      resultado += this.tree(diretorio.filho[subdiretorio], nivel + 1);
+    }
+
+    // Adiciona arquivos no diretório atual
+    for (let arquivo in diretorio.arquivos) {
+      resultado += `${" ".repeat((nivel + 1) * 2)}* ${arquivo}\n`; // Estrutura árvore do arquivo (*)
+    }
+
+    return resultado;
   }
 
   // Remove um diretório vazio
