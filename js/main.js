@@ -16,22 +16,7 @@ function imprimirNoTerminal(mensagem) {
 
 // Gera representação da árvore para a barra lateral
 function gerarRepresentacaoArvore(diretorio, nivel = 0) {
-  let resultado = `${" ".repeat(nivel * 2)}- ${diretorio.nome}\n`;
-
-  // Adiciona subdiretórios (filhos) e arquivos recursivamente
-  for (let subdiretorio in diretorio.filho) {
-    resultado += gerarRepresentacaoArvore(
-      diretorio.filho[subdiretorio],
-      nivel + 1
-    );
-  }
-
-  // Adiciona arquivos no diretório atual
-  for (let arquivo in diretorio.arquivos) {
-    resultado += `${" ".repeat((nivel + 1) * 2)}* ${arquivo}\n`;
-  }
-
-  return resultado;
+  return interpretador.tree(diretorio, nivel);
 }
 
 // Atualiza painel lateral
