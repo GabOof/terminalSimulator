@@ -89,7 +89,7 @@ Cada comando executado é registrado em `FileSystem.history` e pode ser exibido 
 
 ---
 
-## 🧠 Arquitetura Interna
+## Arquitetura Interna
 
 ### 1. `FileSystem`
 
