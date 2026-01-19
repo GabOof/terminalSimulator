@@ -46,9 +46,18 @@ campoEntrada.addEventListener("keydown", (evento) => {
       return;
     }
 
+    // Bloqueia o input do terminal se o comando for 'exit'
+    if (resultado === "__exit__") {
+      imprimirNoTerminal("Encerrando o terminal. Até mais!");
+      campoEntrada.value = "";
+      campoEntrada.disabled = true;
+      return;
+    }
+
     // Imprime o resultado do comando, somente se houver
     if (resultado !== undefined && resultado !== null) {
       imprimirNoTerminal(resultado);
+      campoEntrada.value = "";
     }
 
     campoEntrada.value = "";
