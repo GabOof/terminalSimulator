@@ -25,48 +25,41 @@ Simulador de sistema de arquivos inspirado em terminais LINUX, desenvolvido com 
 Suporte (inspirado no ambiente LINUX) para:
 
 - Criação e Manipulação de Diretórios
-
   - ✅ `mkdir <nome>` — criação de diretório
   - ✅ `rmdir <nome>` — remoção de diretório vazio
   - ✅ `tree` — visualização hierárquica do sistema de arquivos
   - ✅ `rename <nome_antigo> <novo_nome>` — renomeação de arquivo/diretório
 
 - Criação e Manipulação de Arquivos
-
   - ✅ `touch <nome>` — criação de arquivo vazio
   - ✅ `echo <texto> > <arquivo>` — sobrescrita de conteúdo
   - ✅ `echo <texto> >> <arquivo>` — concatenação de conteúdo
   - ✅ `cat <arquivo>` — exibição do conteúdo
   - ✅ `rm <nome>` — remoção forçada (arquivo ou diretório não vazio)
-  - ❌ `head <arquivo> <n>` — primeiras n linhas
-  - ❌ `tail <arquivo> <n>` — últimas n linhas
-  - ❌ `wc <arquivo>` — contagem de linhas, palavras e caracteres
+  - ✅ `head <arquivo> <n>` — primeiras n linhas
+  - ✅ `tail <arquivo> <n>` — últimas n linhas
+  - ✅ `wc <arquivo>` — contagem de linhas, palavras e caracteres
 
 - Navegação entre Diretórios
-
   - ✅ `cd <nome>` — navegação relativa
   - ✅ `cd ..` — diretório pai
   - ✅ `cd /` — diretório raiz
   - ✅ `pwd` — caminho absoluto atual
 
 - Busca e Filtragem
-
   - ❌ `find <diretorio> -name <nome>` — busca recursiva por nome
   - ❌ `grep <termo> <arquivo>` — busca textual em arquivo
 
 - Permissões e Propriedades (Simulação)
-
   - ❌ `chmod <permissao> <nome>` — permissões (r, w, x)
   - ❌ `chown <proprietario> <nome>` — alteração de proprietário
   - ✅ `ls -l` — listagem detalhada (tipo, tamanho, permissões, dono)
 
 - Informações sobre Arquivos e Diretórios
-
   - ❌ `stat <nome>` — metadados completos
   - ❌ `du <diretorio>` — tamanho total do diretório (bytes)
 
 - Operações Avançadas
-
   - ❌ `cp <origem> <destino>` — cópia de arquivos/diretórios
   - ❌ `mv <origem> <destino>` — movimentação
   - ❌ `diff <arquivo1> <arquivo2>` — comparação linha a linha
