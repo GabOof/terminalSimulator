@@ -69,6 +69,7 @@ Suporte (inspirado no ambiente LINUX) para:
 - Extras
   - ✅ `history` — histórico de comandos executados
   - ✅ `clear` — limpa a tela do terminal
+  - ✅ `exit` — encerra sessão do terminal
 
 ### 3. Interface Gráfica Estética e Funcional
 
