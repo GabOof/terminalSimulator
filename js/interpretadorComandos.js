@@ -3,12 +3,14 @@ class InterpretadorComandos {
     this.sistemaArquivos = sistemaArquivos; // Referência ao sistema de arquivos
   }
 
+  // Executa o comando baseado na entrada do usuário
   executa(input) {
     this.sistemaArquivos.adicionaHistorico(input); // Salvar histórico
-    const argumentos = input.trim().split(" ");
-    const cmd = argumentos[0];
+    const argumentos = input.trim().split(" "); // Divide a entrada em argumentos
+    const comando = argumentos[0]; // Comando principal é o primeiro argumento
 
-    switch (cmd) {
+    // Seleciona o comando a ser executado
+    switch (comando) {
       case "mkdir":
         return this.mkdir(argumentos[1]);
       case "touch":
@@ -53,7 +55,7 @@ class InterpretadorComandos {
 
     this.sistemaArquivos.atual.filho[nome] = new Diretorio(
       nome,
-      this.sistemaArquivos.atual
+      this.sistemaArquivos.atual,
     );
     return "Diretório criado.";
   }
@@ -68,6 +70,7 @@ class InterpretadorComandos {
 
   // Navega para outro diretório
   cd(nome) {
+    // Navega para o diretório raiz
     if (!nome || nome === "/") {
       this.sistemaArquivos.atual = this.sistemaArquivos.raiz;
       return this.pwd();
@@ -81,6 +84,7 @@ class InterpretadorComandos {
       return this.pwd();
     }
 
+    // Verifica se o subdiretório existe
     if (!this.sistemaArquivos.atual.filho[nome]) {
       return "Diretório inexistente.";
     }
@@ -93,7 +97,7 @@ class InterpretadorComandos {
   // Retorna o caminho do diretório atual
   pwd() {
     let diretorio = this.sistemaArquivos.atual;
-    if (diretorio === this.sistemaArquivos.raiz) return "~";
+    if (diretorio === this.sistemaArquivos.raiz) return "~"; // Verifica se está na raiz
 
     let caminho = [diretorio.nome];
 
@@ -151,7 +155,7 @@ class InterpretadorComandos {
 
   // Escreve texto em um arquivo
   echo(input) {
-    const correspondencia = input.match(/echo (.*) >>? (\S+)/);
+    const correspondencia = input.match(/echo (.*) >>? (\S+)/); // Regex para verificar qual o tipo de echo e pegar os parâmetros
 
     if (!correspondencia) return "Uso: echo <texto> > <arquivo>";
 
@@ -163,7 +167,7 @@ class InterpretadorComandos {
       this.sistemaArquivos.atual.arquivos[arquivo] = new Arquivo(arquivo);
     }
 
-    // Escreve ou inclui o texto no arquivo
+    // Inclui ou escreve o texto no arquivo
     if (input.includes(">>")) {
       this.sistemaArquivos.atual.arquivos[arquivo].conteudo += texto;
     } else {
@@ -198,9 +202,9 @@ class InterpretadorComandos {
     // Verifica se o arquivo existe
     if (this.sistemaArquivos.atual.arquivos[nomeAntigo]) {
       this.sistemaArquivos.atual.arquivos[nomeNovo] =
-        this.sistemaArquivos.atual.arquivos[nomeAntigo];
-      this.sistemaArquivos.atual.arquivos[nomeNovo].nome = nomeNovo;
-      delete this.sistemaArquivos.atual.arquivos[nomeAntigo];
+        this.sistemaArquivos.atual.arquivos[nomeAntigo]; // Copia o arquivo para o novo nome
+      this.sistemaArquivos.atual.arquivos[nomeNovo].nome = nomeNovo; // Atualiza o nome interno do arquivo
+      delete this.sistemaArquivos.atual.arquivos[nomeAntigo]; // Remove o arquivo antigo
       return "Arquivo renomeado.";
     }
 
@@ -220,7 +224,7 @@ class InterpretadorComandos {
   tree(diretorio, nivel) {
     let resultado = `${" ".repeat(nivel * 2)}- ${diretorio.nome}\n`; // Estrutura árvore do diretório atual (-)
 
-    // Adiciona subdiretórios (filhos) e arquivos recursivamente
+    // Adiciona subdiretórios (filhos) recursivamente
     for (let subdiretorio in diretorio.filho) {
       resultado += this.tree(diretorio.filho[subdiretorio], nivel + 1);
     }
@@ -235,6 +239,8 @@ class InterpretadorComandos {
 
   // Remove um diretório vazio no diretório atual
   rmdir() {
+    let diretoriosRemovidos = 0;
+
     // Percorre todos os subdiretórios do diretório atual
     for (let nome in this.sistemaArquivos.atual.filho) {
       const diretorio = this.sistemaArquivos.atual.filho[nome]; // Obtém o subdiretório
@@ -245,6 +251,7 @@ class InterpretadorComandos {
       if (!temFilhos && !temArquivos) {
         // Remove o subdiretório vazio
         delete this.sistemaArquivos.atual.filho[nome];
+        diretoriosRemovidos++;
       }
     }
 
