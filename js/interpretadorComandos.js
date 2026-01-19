@@ -174,6 +174,8 @@ class InterpretadorComandos {
       this.sistemaArquivos.atual.arquivos[arquivo].conteudo = texto;
     }
 
+    const arquivoTexto = this.sistemaArquivos.atual.arquivos[arquivo];
+
     arquivoTexto.tamanho = arquivoTexto.conteudo.length + 4 * 1024;
 
     return "Conteúdo escrito.";
@@ -264,19 +266,57 @@ class InterpretadorComandos {
 
   // Exibe as primeiras N linhas de um arquivo
   head(nome, linhas) {
-    // TODO: Implementar funcionalidade de head
-    return "Funcionalidade em desenvolvimento.";
+    if (!nome || !linhas) return "Use: head <arquivo> <numero>";
+
+    // Verifica se o arquivo existe
+    const arquivo = this.sistemaArquivos.atual.arquivos[nome];
+    if (!arquivo) return "Arquivo não encontrado.";
+
+    // Tenta converter o número de linhas
+    const numeroLinhas = parseInt(linhas);
+
+    // Pega o conteúdo e divide em linhas
+    const conteudoLinhas = arquivo.conteudo.split("  ");
+
+    // Retorna as primeiras N linhas
+    return conteudoLinhas.slice(0, n).join("\n");
   }
 
   // Exibe as últimas N linhas de um arquivo
   tail(nome, linhas) {
-    // TODO: Implementar funcionalidade de tail
-    return "Funcionalidade em desenvolvimento.";
+    if (!nome || !linhas) return "Use: tail <arquivo> <numero>";
+
+    // Verifica se o arquivo existe
+    const arquivo = this.sistemaArquivos.atual.arquivos[nome];
+    if (!arquivo) return "Arquivo não encontrado.";
+
+    // Tenta converter o número de linhas
+    const numeroLinhas = parseInt(linhas);
+
+    // Pega o conteúdo e divide em linhas
+    const conteudoLinhas = arquivo.conteudo.split("  ");
+
+    // Retorna as últimas N linhas
+    return conteudoLinhas.slice(-numeroLinhas).join("\n");
   }
 
   // Conta linhas, palavras e caracteres em um arquivo
   wc(nome) {
-    // TODO: Implementar funcionalidade de wc
-    return "Funcionalidade em desenvolvimento.";
+    if (!nome) return "Use: wc <arquivo>";
+
+    // Verifica se o arquivo existe
+    const arquivo = this.sistemaArquivos.atual.arquivos[nome];
+    if (!arquivo) return "Arquivo não encontrado.";
+
+    const conteudo = arquivo.conteudo;
+    const linhas = conteudo.split("  ").length; // Divide por quebras de linha
+    const palavras = conteudo.trim().split(/\s+/).length; // Divide por espaços em branco
+    const caracteres = conteudo.length; // Conta todos os caracteres, incluindo espaços
+
+    return (
+      `Linhas: ${linhas}` +
+      `\nPalavras: ${palavras}` +
+      `\nCaracteres: ${caracteres}`
+    );
   }
 }
