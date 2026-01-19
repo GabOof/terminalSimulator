@@ -7,7 +7,7 @@ class SistemaArquivos {
   }
 
   // Salvar comando no histórico
-  adicionaHistorico(cmd) {
-    this.historico.push(cmd);
+  adicionaHistorico(comando) {
+    this.historico.push(comando);
   }
 }
