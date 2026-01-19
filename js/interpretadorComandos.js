@@ -43,6 +43,8 @@ class InterpretadorComandos {
         return this.tail(argumentos[1], argumentos[2]);
       case "wc":
         return this.wc(argumentos[1]);
+      case "exit":
+        return "__exit__";
       default:
         return "Comando inválido.";
     }
