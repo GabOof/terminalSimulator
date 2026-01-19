@@ -112,7 +112,7 @@ body {
 
 /* Campo de entrada */
 #inputComando {
-  width: auto;
+  width: 95%;
   background: none;
   border: none;
   outline: none;
